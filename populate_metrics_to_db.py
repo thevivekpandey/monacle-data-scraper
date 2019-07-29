@@ -29,6 +29,9 @@ def process_one_config(paginator, config, db):
             stats = config['Stats']
             insert_data = {'ns': ns, 'dim_name': dim_name, 'dim_value': dim_value, 'metric': metric_name, 'period': 300, 'stats': stats}
             db.insert_fetch_config(insert_data)
+        f = open('/home/ubuntu/log/populate_metrics_to_db.txt', 'a')
+        f.write(f"Put {len(response['Metrics'])} metrics in mysql db\n")
+        f.close()
     
 if __name__ == '__main__':
     cloudwatch = boto3.client('cloudwatch')

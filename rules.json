@@ -1,0 +1,12 @@
+{
+  "rules":[
+    {
+      "name": "High CPU util yesterday",
+      "function_name": "high_cpu_util_yeterday",
+      "namespace": "AWS/EC2",
+      "metricName": "CPUUtilization",
+      "dimension": "InstanceId",
+      "period": 604800
+    } 
+  ]
+}
