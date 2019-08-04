@@ -3,33 +3,25 @@ from mo_mongo import MoMongo
 from datetime import datetime
 from datetime import timedelta
 from datetime import date
-#from evaluator import high_cpu_util_yesterday
-
-def check_for_single_anomaly(time_series, ref_date):
-    sums_counts = {}
-    for t, val in time_series.items():
-        d = t.date()
-        sums_counts.setdefault(d, {'sum': 0, 'count': 0})
-        sums_counts[d]['sum'] += val
-        sums_counts[d]['count'] += 1
-    averages = {}
-    for d, detail in sums_counts.items():
-        averages[d] = detail['sum'] / detail['count']
-    print(averages)
+from anomaly_calculator import AnomalyCalculator
 
 def check_for_anomalies(grouped_data, tz, ref_date):
-    for dim_val, time_series in grouped_data.items():
-        if dim_val == 'i-0fedbd54d59c494be':
-            print("min:", min(time_series.keys()))
-            print("max:", max(time_series.keys()))
-            print("len:", len(time_series))
     #tz is not used currently
     anomalies = []
+    print('Checking unusually high cpu')
     for dim_val, time_series in grouped_data.items():
-        if dim_val == 'i-0fedbd54d59c494be':
-            anomaly = check_for_single_anomaly(time_series, ref_date)
-            if anomaly:
-                anomalies.append(anomaly)
+        ac = AnomalyCalculator(time_series, ref_date)
+        anomaly = ac.check_unusually_high_cpu()
+        if anomaly:
+            anomalies.append(anomaly)
+            print(dim_val, end=' ')
+    print('Checking unusually low cpu')
+    for dim_val, time_series in grouped_data.items():
+        ac = AnomalyCalculator(time_series, ref_date)
+        anomaly = ac.check_unusually_low_cpu()
+        if anomaly:
+            anomalies.append(anomaly)
+            print(dim_val, end=' ')
     return anomalies
 
 def group_by_dimension(data, dimension):
@@ -56,6 +48,5 @@ if __name__ == '__main__':
         data = mo_mongo.get_data_from_mongo(namespace, dimension, metric_name, start_time)
         grouped_data = group_by_dimension(data, 'dimVal')
         #print(grouped_data)
-        anomalies = check_for_anomalies(grouped_data, 'Asia/Taipei', date.today())
-        print(anomalies)
+        anomalies = check_for_anomalies(grouped_data, 'Asia/Taipei', date.today() - timedelta(1))
 
