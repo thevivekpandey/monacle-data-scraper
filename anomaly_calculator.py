@@ -2,9 +2,10 @@ from datetime import timedelta
 from datetime import date
 
 class AnomalyCalculator():
-    def __init__(self, time_series, ref_date):
+    def __init__(self, time_series, ref_date, dim_val):
         self.time_series = time_series
         self.ref_date = ref_date
+        self.dim_val = dim_val
         self.day_wise_averages = self._calculate_day_wise_averages(time_series)
 
     def _calculate_day_wise_averages(self, time_series):

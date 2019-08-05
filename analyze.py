@@ -5,23 +5,20 @@ from datetime import timedelta
 from datetime import date
 from anomaly_calculator import AnomalyCalculator
 
+def add_if_no_null(anomalies, anomaly, dim_val):
+    if anomaly:
+        anomalies.append(anomaly)
+    return anomalies
+
 def check_for_anomalies(grouped_data, tz, ref_date):
     #tz is not used currently
     anomalies = []
-    print('Checking unusually high cpu')
     for dim_val, time_series in grouped_data.items():
-        ac = AnomalyCalculator(time_series, ref_date)
+        ac = AnomalyCalculator(time_series, ref_date, dim_val)
         anomaly = ac.check_unusually_high_cpu()
-        if anomaly:
-            anomalies.append(anomaly)
-            print(dim_val, end=' ')
-    print('Checking unusually low cpu')
-    for dim_val, time_series in grouped_data.items():
-        ac = AnomalyCalculator(time_series, ref_date)
+        anomalies = add_if_no_null(anomalies, anomaly, dim_val)
         anomaly = ac.check_unusually_low_cpu()
-        if anomaly:
-            anomalies.append(anomaly)
-            print(dim_val, end=' ')
+        anomalies = add_if_no_null(anomalies, anomaly, dim_val)
     return anomalies
 
 def group_by_dimension(data, dimension):
@@ -47,6 +44,5 @@ if __name__ == '__main__':
         start_time = datetime.now() - timedelta(seconds=period + 86400)
         data = mo_mongo.get_data_from_mongo(namespace, dimension, metric_name, start_time)
         grouped_data = group_by_dimension(data, 'dimVal')
-        #print(grouped_data)
         anomalies = check_for_anomalies(grouped_data, 'Asia/Taipei', date.today() - timedelta(1))
 
