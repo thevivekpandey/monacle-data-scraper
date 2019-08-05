@@ -5,20 +5,12 @@ from datetime import timedelta
 from datetime import date
 from anomaly_calculator import AnomalyCalculator
 
-def add_if_no_null(anomalies, anomaly, dim_val):
-    if anomaly:
-        anomalies.append(anomaly)
-    return anomalies
-
 def check_for_anomalies(grouped_data, tz, ref_date):
     #tz is not used currently
     anomalies = []
     for dim_val, time_series in grouped_data.items():
         ac = AnomalyCalculator(time_series, ref_date, dim_val)
-        anomaly = ac.check_unusually_high_cpu()
-        anomalies = add_if_no_null(anomalies, anomaly, dim_val)
-        anomaly = ac.check_unusually_low_cpu()
-        anomalies = add_if_no_null(anomalies, anomaly, dim_val)
+        anomalies = ac.check_anomalies()
     return anomalies
 
 def group_by_dimension(data, dimension):
