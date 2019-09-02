@@ -29,9 +29,9 @@ def get_metric_statistics(client, config):
         Statistics=[config['stats']])
     return response
 
-def insert_to_mongo(config, response):
+def insert_to_mongo(config, response, app_id):
     conn = MongoClient('localhost')
-    data = conn['test'].data
+    data = conn[app_id].data
 
     inserted = 0
     for datapoint in response['Datapoints']:
@@ -58,17 +58,27 @@ def insert_to_mongo(config, response):
     return inserted
 
 if __name__ == '__main__':
-    client = boto3.client('cloudwatch')
-    db = database.Database()
     while True:
-        f = open('/home/ubuntu/log/scrape.txt', 'a')
-        configs = db.get_metrics()
-        inserted = 0
-        for idx, config in enumerate(configs):
-            response = get_metric_statistics(client, config)
-            inserted += insert_to_mongo(config, response)
-            if idx % 10 == 0:
-                f.write(f"idx = {idx}\n")
-        f.write(f"Did one round, inserted {inserted} rows, sleeping now\n")
-        f.close()
+        db = database.Database(0)
+        ids_2_credentials = db.get_credentials()
+        ids_2_app_id = db.get_id_app_id_mapping()
+
+        for id, credentials in ids_2_credentials.items():
+            print(id)
+            f = open('/home/ubuntu/log/scrape.txt', 'a')
+            db = database.Database(id)
+            key = credentials['aws_access_key_id']
+            secret = credentials['aws_secret_access_key']
+            client = boto3.client('cloudwatch', aws_access_key_id=key, aws_secret_access_key=secret)
+            app_id = ids_2_app_id[id]
+            configs = db.get_metrics()
+            inserted = 0
+            for idx, config in enumerate(configs):
+                response = get_metric_statistics(client, config)
+                inserted += insert_to_mongo(config, response, app_id)
+                if idx % 10 == 0:
+                    print(idx, "/", len(configs))
+                    f.write(f"idx = {idx}\n")
+            f.write(f"Did one round, inserted {inserted} rows, sleeping now\n")
+            f.close()
         time.sleep(300)

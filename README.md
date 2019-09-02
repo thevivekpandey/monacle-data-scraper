@@ -28,3 +28,7 @@ period: int
 stats: varchar(16)
 deleted: int
 created_at: datetime
+
+##Sample feed in api_feed table:
+{ "data": [ {"name": "Sep 1", "cpu": 88}, {"name": "Sep 2", "cpu": 82}, {"name": "Sep 3", "cpu": 84}, {"name": "Sep 4", "cpu": 90}, {"name": "Sep 5", "cpu": 91}, {"name": "Sep 6", "cpu": 86}, {"name": "Sep 7", "cpu": 48} ], "message": "CPU util of abcd machine has been significantly high on Sep7 <a
+href=\"http://www.google.com\" target=\"_blank\">See more.</a>" }

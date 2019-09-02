@@ -22,6 +22,7 @@ def process_one_config(paginator, config, db):
                                        Namespace=config['Namespace'],
                                        Dimensions=config['Dimensions']):
         for metric in response['Metrics']:
+            print(metric)
             ns = config['Namespace']
             dim_name = config['Dimensions'][0]['Name']
             metric_name = config['MetricName']
@@ -34,11 +35,20 @@ def process_one_config(paginator, config, db):
         f.close()
     
 if __name__ == '__main__':
-    cloudwatch = boto3.client('cloudwatch')
-    paginator = cloudwatch.get_paginator('list_metrics')
-    db = database.Database()
-
     while True:
-        for config in CONFIGS:
-            process_one_config(paginator, config, db)
+        db = database.Database(0)
+        ids_2_credentials = db.get_credentials()
+        for id, credentials in ids_2_credentials.items():
+            print(id)
+            db = database.Database(id)
+            key = credentials['aws_access_key_id']
+            secret = credentials['aws_secret_access_key']
+            cloudwatch = boto3.client('cloudwatch', 
+                                      aws_access_key_id=key, 
+                                      aws_secret_access_key=secret)
+            paginator = cloudwatch.get_paginator('list_metrics')
+
+            for config in CONFIGS:
+                process_one_config(paginator, config, db)
+        print('Sleeping now')
         time.sleep(3600)
