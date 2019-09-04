@@ -24,17 +24,17 @@ class Database:
         self.cursor.connection.commit()
         print(datetime.now(), query)
 
-    def clear_anomalies(self, account_id):
+    def clear_anomalies(self):
         print('clearning anomalies')
-        query = f"delete from api_feed where account_id = {account_id}"
+        query = f"delete from api_feed where account_id = {self.account_id}"
         self.cursor.execute(query)
         self.cursor.connection.commit()
 
-    def write_anomaly(self, account_id, anomaly):
+    def write_anomaly(self, anomaly):
         print('doing querying')
         query = "insert into api_feed (feed, account_id, deleted) values (%s, %s, %s)"
         print(query)
-        self.cursor.execute(query, (json.dumps(anomaly), 1, 0))
+        self.cursor.execute(query, (json.dumps(anomaly), self.account_id, 0))
         self.cursor.connection.commit()
         print('done querying')
 

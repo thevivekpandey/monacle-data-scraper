@@ -11,7 +11,7 @@ def get_start_end_time():
     end_time = datetime.now()
     end_min = end_time.minute
     end_time = end_time.replace(minute=end_min - end_min % 5, second=0, microsecond=0)
-    start_time = end_time - timedelta(days=3)
+    start_time = end_time - timedelta(days=5)
     return start_time, end_time
 
 def get_metric_statistics(client, config):
@@ -81,4 +81,4 @@ if __name__ == '__main__':
                     f.write(f"idx = {idx}\n")
             f.write(f"Did one round, inserted {inserted} rows, sleeping now\n")
             f.close()
-        time.sleep(300)
+        time.sleep(900)

@@ -31,25 +31,28 @@ def group_by_dimension(data, dimension):
     return grouped_data
 
 if __name__ == '__main__':
-    mo_mongo = MoMongo()
-    database = Database()
+    database = Database(0)
+    id_2_app_id =  database.get_id_app_id_mapping()
     anomalies = []
-    with open('rules.json') as f:
-        rules = json.loads(f.read())['rules']
-        for rule in rules:
-            namespace = rule['namespace']
-            dimension = rule['dimension']
-            metric_name = rule['metricName']
-            period = rule['period']
-            function = rule['function_name']
-        start_time = datetime.now() - timedelta(seconds=period + 86400)
-        data = mo_mongo.get_data_from_mongo(namespace, dimension, metric_name, start_time)
-        grouped_data = group_by_dimension(data, 'dimVal')
-        anomalies.extend(check_for_anomalies(grouped_data, 'Asia/Taipei', date.today() - timedelta(1)))
-    jsonified_anomalies = [anomaly.jsonify() for anomaly in anomalies]
-    print('before')
-    database.clear_anomalies(1)
-    print('after')
-    print(jsonified_anomalies)
-    for anomaly in jsonified_anomalies:
-        database.write_anomaly(1, anomaly)
+    for id, app_id in id_2_app_id.items():
+        with open('rules.json') as f:
+            rules = json.loads(f.read())['rules']
+            for rule in rules:
+                namespace = rule['namespace']
+                dimension = rule['dimension']
+                metric_name = rule['metricName']
+                period = rule['period']
+                function = rule['function_name']
+            start_time = datetime.now() - timedelta(seconds=period + 86400)
+            mo_mongo = MoMongo(app_id)
+            data = mo_mongo.get_data_from_mongo(namespace, dimension, metric_name, start_time)
+            grouped_data = group_by_dimension(data, 'dimVal')
+            anomalies.extend(check_for_anomalies(grouped_data, 'Asia/Taipei', date.today() - timedelta(1)))
+        jsonified_anomalies = [anomaly.jsonify() for anomaly in anomalies]
+        print('before')
+        database = Database(id)
+        database.clear_anomalies()
+        print('after')
+        print(jsonified_anomalies)
+        for anomaly in jsonified_anomalies:
+            database.write_anomaly(anomaly)

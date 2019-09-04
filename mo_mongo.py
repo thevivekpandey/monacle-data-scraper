@@ -1,9 +1,9 @@
 from pymongo import MongoClient
 
 class MoMongo():
-    def __init__(self):
+    def __init__(self, app_id):
         self.conn = MongoClient('localhost')
-        self.data = self.conn['test'].data
+        self.data = self.conn[app_id].data
 
     def get_data_from_mongo(self, ns, dim_name, metric, start_time):
         query = {'ns': ns, 'metric': metric, 'dimName': dim_name}
