@@ -1,5 +1,6 @@
+header: 'High 5xx in ALB'
 subcharts:
-- message: 'ALB <span style="font-family:monospace"><a href="#">event-data-ingestion</a></span> has been giving much larger number of 5xx responses since {2 HR}.'
+- message: 'ALB [event-data-ingestion] has been giving much larger number of 5xx responses since {2 HR}.'
   series: 5xx
   data:
    - name: {5 HR} 
@@ -12,7 +13,7 @@ subcharts:
      5xx: 545554
    - name: {1 HR} 
      5xx: 535345
-- message: 'Simultaneously CPU utilisation of servers <span style="font-family: monospace"><a href="#">ingester-1</a></span>, <span style="font-family: monospace"><a href="#">ingester-2</a></span> and <span style="font-family: monospace"><a href="#">ingester-3</a></span> have dropped to nearly zero.'
+- message: 'Simultaneously CPU utilisation of servers [ingester-1], [ingester-2] and [ingester-3] have dropped to nearly zero.'
   series: cpu
   data:
    - name: {5 HR}
@@ -25,4 +26,4 @@ subcharts:
      cpu: 2.5
    - name: {1 HR}
      cpu: 3.8
-- message: 'Root cause seems to be that the process <span style="font-family:monospace">core-ingester</span> which is usually running on these machine and consuming high CPU, but is dead now.'
+- message: 'Root cause seems to be that the process [core-ingester] which is usually running on these machine and consuming high CPU, but is dead now.'

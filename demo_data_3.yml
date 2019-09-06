@@ -1,0 +1,29 @@
+header: 'Long term increase in requests to event-data-ingestion'
+subcharts:
+- message: 'Number of requests to ALB [event-data-ingestion] has been rising since last 4 months.'
+  series: num_requests
+  data:
+   - name: Feb 2019
+     num_requests: 504034
+   - name: Mar 2019
+     num_requests: 546900
+   - name: Apr 2019
+     num_requests: 612030
+   - name: May 2019
+     num_requests: 683030
+   - name: Jun 2019
+     num_requests: 732334
+- message: 'Response times have slightly degraded. Here they are, in milliseconds:'
+  series: response_time
+  data:
+   - name: Feb 2019
+     response_time: 8.3
+   - name: Mar 2019
+     response_time: 8.4
+   - name: Apr 2019
+     response_time: 8.8 
+   - name: May 2019
+     response_time: 9.3
+   - name: Jun 2019
+     response_time: 10.7
+- message: 'This are currently in control, but I will keep a watch'

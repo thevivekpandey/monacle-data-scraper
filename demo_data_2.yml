@@ -1,5 +1,6 @@
+header: 'High CPU util of mongo servers'
 subcharts:
-- message: 'CPU utilisation of servers mongodb-1, mongodb-2 and mongodb-3 has been rising continously for past 3 days.'
+- message: 'CPU utilisation of servers [mongodb-1], [mongodb-2] and [mongodb-3] has been rising continously for past 3 days.'
   series: cpu
   data:
    - name: {7 DAY}
@@ -16,5 +17,14 @@ subcharts:
      cpu: 52.3
    - name: {1 DAY}
      cpu: 56.7
-
-
+- message: Simultaneously I observe that number of slow queries for the collection [a1f8b73d82.profiles] has increased.
+  #table:
+  #   headers: [date, num slow queries on a1f8b73d82.profiles]
+  #   rows:
+  #     - [{7 DAY}, 10]
+  #     - [{6 DAY}, 10]
+  #     - [{5 DAY}, 10]
+  #     - [{4 DAY}, 10]
+  #     - [{3 DAY}, 10]
+  #     - [{2 DAY}, 10]
+  #     - [{1 DAY}, 10]

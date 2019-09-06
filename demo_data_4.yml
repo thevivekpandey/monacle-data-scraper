@@ -1,0 +1,19 @@
+header: 'Disk getting filled up'
+subcharts:
+- message: 'Disk space of [penthouse-servers] is depleting. At current rate, it will hit 100% on Sep 8'
+  series: disk_space
+  data:
+   - name: {7 DAY}
+     disk_space: 82.4
+   - name: {6 DAY}
+     disk_space: 84.5
+   - name: {5 DAY}
+     disk_space: 86.4
+   - name: {4 DAY}
+     disk_space: 89.0
+   - name: {3 DAY}
+     disk_space: 91.5
+   - name: {2 DAY}
+     disk_space: 94.3
+   - name: {1 DAY}
+     disk_space: 96.6

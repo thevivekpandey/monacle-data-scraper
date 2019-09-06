@@ -1,0 +1,37 @@
+header: 'Peaking CPU util on misc-tasks'
+subcharts:
+- message: 'CPU utilisation of [misc-tasks] was quite high on {2 DAY}. It was OK on subsequently.'
+  series: cpu
+  data:
+   - name: {7 DAY}
+     cpu: 32.4
+   - name: {6 DAY}
+     cpu: 34.5
+   - name: {5 DAY}
+     cpu: 36.4
+   - name: {4 DAY}
+     cpu: 39.0
+   - name: {3 DAY}
+     cpu: 37.5
+   - name: {2 DAY}
+     cpu: 64.3
+   - name: {1 DAY}
+     cpu: 36.6
+
+- message: 'On taking a deeper look, a process called [ramsis] ran between 5 PM and 9 M on {2 DAY}, which is the cuase of high CPU utilisation over the day.'
+  series: cpu
+  data:
+   - name: Sep 7, 2 PM
+     cpu: 22.4
+   - name: Sep 7, 3 PM
+     cpu: 24.5
+   - name: Sep 7, 4 PM
+     cpu: 26.4
+   - name: Sep 7, 5 PM
+     cpu: 29.0
+   - name: Sep 7, 6 PM
+     cpu: 37.5
+   - name: Sep 7, 7 PM
+     cpu: 64.3
+   - name: Sep 7, 8 PM
+     cpu: 36.6
