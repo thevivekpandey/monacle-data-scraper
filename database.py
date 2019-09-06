@@ -25,18 +25,14 @@ class Database:
         print(datetime.now(), query)
 
     def clear_anomalies(self):
-        print('clearning anomalies')
         query = f"delete from api_feed where account_id = {self.account_id}"
         self.cursor.execute(query)
         self.cursor.connection.commit()
 
     def write_anomaly(self, anomaly):
-        print('doing querying')
         query = "insert into api_feed (feed, account_id, deleted) values (%s, %s, %s)"
-        print(query)
         self.cursor.execute(query, (json.dumps(anomaly), self.account_id, 0))
         self.cursor.connection.commit()
-        print('done querying')
 
     def get_credentials(self):
         query = "select id, settings from api_account where settings like '%aws_access_key_id%'";

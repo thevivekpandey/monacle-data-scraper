@@ -1,0 +1,20 @@
+subcharts:
+- message: 'CPU utilisation of servers mongodb-1, mongodb-2 and mongodb-3 has been rising continously for past 3 days.'
+  series: cpu
+  data:
+   - name: {7 DAY}
+     cpu: 43.7
+   - name: {6 DAY}
+     cpu: 42.5
+   - name: {5 DAY}
+     cpu: 41.5
+   - name: {3 DAY}
+     cpu: 44.8
+   - name: {3 DAY}
+     cpu: 48.7
+   - name: {2 DAY}
+     cpu: 52.3
+   - name: {1 DAY}
+     cpu: 56.7
+
+

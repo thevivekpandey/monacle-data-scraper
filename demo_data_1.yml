@@ -1,0 +1,28 @@
+subcharts:
+- message: 'ALB <span style="font-family:monospace"><a href="#">event-data-ingestion</a></span> has been giving much larger number of 5xx responses since {2 HR}.'
+  series: 5xx
+  data:
+   - name: {5 HR} 
+     5xx: 100000
+   - name: {4 HR} 
+     5xx: 105000
+   - name: {3 HR} 
+     5xx: 107345
+   - name: {2 HR} 
+     5xx: 545554
+   - name: {1 HR} 
+     5xx: 535345
+- message: 'Simultaneously CPU utilisation of servers <span style="font-family: monospace"><a href="#">ingester-1</a></span>, <span style="font-family: monospace"><a href="#">ingester-2</a></span> and <span style="font-family: monospace"><a href="#">ingester-3</a></span> have dropped to nearly zero.'
+  series: cpu
+  data:
+   - name: {5 HR}
+     cpu: 41.6
+   - name: {4 HR}
+     cpu: 42.9
+   - name: {3 HR}
+     cpu: 40.5
+   - name: {2 HR}
+     cpu: 2.5
+   - name: {1 HR}
+     cpu: 3.8
+- message: 'Root cause seems to be that the process <span style="font-family:monospace">core-ingester</span> which is usually running on these machine and consuming high CPU, but is dead now.'
